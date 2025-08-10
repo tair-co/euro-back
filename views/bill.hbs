@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workspace Billing</title>
+</head>
+<body>
+    <div class="workspace">
+        <select class="form-select mb-3 " style="padding: 15px; border: 1px solid #ccc; border-radius: 4px; max-width: 200px; font-size: 24px;" name="month" id="month">
+            <option value="none" selected>All Months</option>
+            <option value="april">April</option>
+            <option value="may">May</option>
+            <option value="june">June</option>
+            <option value="july">July</option>
+            <option value="august">August</option>
+            <option value="september">September</option>
+            <option value="october">October</option>
+            <option value="november">November</option>
+            <option value="december">December</option>
+            <option value="january">January</option>
+            <option value="february">February</option>
+            <option value="march">March</option>
+        </select>
+
+       <table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Token</th>
+            <th>Service Name</th>
+            <th>Time</th>
+            <th>Per sec.</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each filteredData}}
+            <!-- {{@key}} — это название токена -->
+            <tr>
+                <td colspan="5" style="font-weight: bold; background: #eee;">
+                    {{@key}}
+                </td>
+            </tr>
+
+            {{#each this}}
+            <tr>
+                <td></td> <!-- пустая ячейка под токен -->
+                <td>{{service_name}}</td>
+                <td>{{usage_duration_in_ms}}</td>
+                <td>{{service_cost_per_ms}}</td>
+                <td>{{total_cost}}</td>
+            </tr>
+            {{/each}}
+        {{/each}}
+    </tbody>
+</table>
+
+            <h3>Total: {{totalCost}}</h3>
+
+    </div>
+</body>
+</html>
+
