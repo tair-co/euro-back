@@ -13,6 +13,8 @@ module.exports = {
     res.render("login");
   },
   workspacePage: async (req, res, next) => {
+    const { message } = req.query;
+
     let workspaces;
 
     // get Data
@@ -22,6 +24,9 @@ module.exports = {
       return next(error);
     }
 
-    res.render("workspace", { workspaces });
+    if (message) {
+      return res.render("workspaces", { workspaces, message });
+    }
+    res.render("workspaces", { workspaces });
   },
 };

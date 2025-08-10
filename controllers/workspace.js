@@ -10,4 +10,36 @@ module.exports = {
       next(error);
     }
   },
+  createWorkspace: async (req, res, next) => {
+    const { title, description } = req.body;
+
+    if (!title && title.length == "") {
+      return res.redirect("/v1/workspace?message=Title required");
+    }
+
+    try {
+      // TODO: add user_id
+
+      const exitsTitle = await Workspace.findOne({
+        where: {
+          title,
+          //   user_id,
+        },
+      });
+
+      if (exitsTitle) {
+        return res.redirect(
+          "/v1/workspace?message=Workspace with this title already has"
+        );
+      }
+
+      // TODO: CHANGE static user_id
+
+      await Workspace.create({ title, description, user_id: 1 });
+
+      res.redirect("/v1/workspace");
+    } catch (error) {
+      next(error);
+    }
+  },
 };

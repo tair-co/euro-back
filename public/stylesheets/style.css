@@ -18,6 +18,8 @@ body {
   padding: 15px;
   border-radius: 11px;
   border: 1px solid #9f9f9fea;
+  width: 250px;
+  margin-right: 25px;
 }
 .workspace__title {
   font-size: 32px;
