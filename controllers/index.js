@@ -12,7 +12,8 @@ module.exports = {
 
     res.render("login");
   },
-  workspacePage: async (req, res, next) => {
+
+  workspacesPage: async (req, res, next) => {
     const { message } = req.query;
 
     let workspaces;
@@ -28,5 +29,23 @@ module.exports = {
       return res.render("workspaces", { workspaces, message });
     }
     res.render("workspaces", { workspaces });
+  },
+  workspacePage: async (req, res, next) => {
+    const { message } = req.query;
+    const { id } = req.params;
+
+    let workspace;
+
+    // get Data
+    try {
+      workspace = await Workspace.findOne({ raw: true, where: { id } });
+    } catch (error) {
+      return next(error);
+    }
+
+    if (message) {
+      return res.render("workspace", { workspace, message });
+    }
+    res.render("workspace", { workspace });
   },
 };

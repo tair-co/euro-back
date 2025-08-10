@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
   <body>
-    <div class="border-1 rounded-2 border-black workspace">
+    <div class="border-1 rounded-2 border-black workspace mt-5">
         <h1 class=" mb-5">Workspace Panel</h1>
         <form action="api/workspaces/create" method="post" class=" mb-4">
         <h3 class=" mb-4">Add Workspace</h3>
@@ -20,12 +20,12 @@
         </form>
         <h3 class=" mt-5">Workspaces</h3>
         
-        <div class="  d-flex mt-3">
+        <div class="  d-flex mt-3 flex-wrap">
             {{#each workspaces}}
-            <div class="workspace__card">
+            <div class="workspace__card mb-3">
                 <h4 class="workspace__title">{{title}}</h4>
                 <p>{{description}}</p>
-                <a class=" btn btn-warning " style="color: #000;" href="workspace/{{id}}/update">Modify</a>
+                <a class=" btn btn-warning " style="color: #000;" href="workspace/{{id}}">Modify</a>
             </div>
             {{/each}}
         </div>

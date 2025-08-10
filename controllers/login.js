@@ -26,8 +26,9 @@ module.exports = {
         return res.redirect("/v1/login?message=invalid password");
       }
 
-      return res.redirect("/v1/workspace");
+      return res.redirect("/v1/workspaces");
     } catch (error) {
+      console.log(error);
       next(error);
     }
   },

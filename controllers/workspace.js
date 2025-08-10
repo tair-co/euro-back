@@ -14,7 +14,7 @@ module.exports = {
     const { title, description } = req.body;
 
     if (!title && title.length == "") {
-      return res.redirect("/v1/workspace?message=Title required");
+      return res.redirect("/v1/workspaces?message=Title required");
     }
 
     try {
@@ -29,7 +29,7 @@ module.exports = {
 
       if (exitsTitle) {
         return res.redirect(
-          "/v1/workspace?message=Workspace with this title already has"
+          "/v1/workspaces?message=Workspace with this title already has"
         );
       }
 
@@ -37,7 +37,7 @@ module.exports = {
 
       await Workspace.create({ title, description, user_id: 1 });
 
-      res.redirect("/v1/workspace");
+      res.redirect("/v1/workspaces");
     } catch (error) {
       next(error);
     }

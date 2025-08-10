@@ -1,5 +1,5 @@
 var express = require("express");
-const { loginPage, workspacePage } = require("../controllers");
+const { loginPage, workspacePage, workspacesPage } = require("../controllers");
 var router = express.Router();
 
 /* GET home page. */
@@ -10,6 +10,7 @@ router.get("/", function (req, res, next) {
 router.get("/login", loginPage);
 
 /* GET  Workspaces page. */
-router.get("/workspace", workspacePage);
+router.get("/workspaces", workspacesPage);
+router.get("/workspace/:id", workspacePage);
 
 module.exports = router;
