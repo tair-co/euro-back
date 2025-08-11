@@ -26,6 +26,8 @@ module.exports = {
         return res.redirect("/v1/login?message=invalid password");
       }
 
+      req.session.user_id = findUser.id;
+
       return res.redirect("/v1/workspaces");
     } catch (error) {
       console.log(error);

@@ -1,4 +1,5 @@
 const Bill = require("../models/Bill");
+const User = require("../models/User");
 const Workspace = require("../models/Workspace");
 
 function separateByTokens(arr) {
@@ -16,15 +17,39 @@ function separateByTokens(arr) {
     );
 
     if (index !== -1) {
-      // суммируем значения
-      obj[token][index].usage_duration_in_ms += arr[i].usage_duration_in_ms;
-      obj[token][index].service_cost_per_ms += arr[i].service_cost_per_ms;
+      obj[token][index].usage_duration_in_ms = (
+        (Number(obj[token][index].usage_duration_in_ms) +
+          Number(arr[i].usage_duration_in_ms)) /
+        1000
+      ).toFixed(3);
+      obj[token][index].service_cost_per_ms = (
+        Number(obj[token][index].service_cost_per_ms) +
+        Number(arr[i].service_cost_per_ms)
+      ).toFixed(4);
+      obj[token][index].total = (
+        Number(obj[token][index].usage_duration_in_ms) /
+        Number(obj[token][index].service_cost_per_ms)
+      ).toFixed(2);
     } else {
       obj[token].push({ ...arr[i] });
     }
   }
 
   return obj;
+}
+
+function calcGrandTotal(tokensObj) {
+  let grandTotal = 0;
+
+  for (const token in tokensObj) {
+    if (Array.isArray(tokensObj[token])) {
+      for (const item of tokensObj[token]) {
+        grandTotal += Number(item.total || 0);
+      }
+    }
+  }
+
+  return grandTotal;
 }
 
 module.exports = {
@@ -37,10 +62,15 @@ module.exports = {
         raw: true,
         where: { id: workspaceId },
       });
-
+      const user = await User.findOne({
+        id: req.session.user_id,
+      });
       const findBillings = await Bill.findAll({
         raw: true,
-        where: { workspace_title: exitWorkspaces.title },
+        where: {
+          workspace_title: exitWorkspaces.title,
+          username: user.username,
+        },
       });
 
       if (month) {
@@ -57,7 +87,11 @@ module.exports = {
 
         console.log(tokens);
 
-        return res.render("bill", { filteredData: tokens, month: "none" });
+        return res.render("bill", {
+          filteredData: tokens,
+          month: "none",
+          grandTotal: calcGrandTotal(tokens),
+        });
       }
     } catch (error) {
       next(error);

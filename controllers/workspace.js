@@ -23,7 +23,7 @@ module.exports = {
       const exitsTitle = await Workspace.findOne({
         where: {
           title,
-          //   user_id,
+          user_id: req.session.user_id,
         },
       });
 
@@ -33,9 +33,11 @@ module.exports = {
         );
       }
 
-      // TODO: CHANGE static user_id
-
-      await Workspace.create({ title, description, user_id: 1 });
+      await Workspace.create({
+        title,
+        description,
+        user_id: req.session.user_id,
+      });
 
       res.redirect("/v1/workspaces");
     } catch (error) {

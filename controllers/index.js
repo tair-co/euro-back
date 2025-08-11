@@ -22,7 +22,9 @@ module.exports = {
 
     // get Data
     try {
-      workspaces = await Workspace.findAll();
+      workspaces = await Workspace.findAll({
+        where: { user_id: req.session.user_id },
+      });
     } catch (error) {
       return next(error);
     }

@@ -2,7 +2,7 @@ var express = require("express");
 const { loginPage, workspacePage, workspacesPage } = require("../controllers");
 const { getBill } = require("../controllers/bill");
 var router = express.Router();
-
+const authMiddleware = require("../utils/middleware");
 /* GET home page. */
 router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
@@ -11,8 +11,8 @@ router.get("/", function (req, res, next) {
 router.get("/login", loginPage);
 
 /* GET  Workspaces page. */
-router.get("/workspaces", workspacesPage);
-router.get("/workspace/:id", workspacePage);
+router.get("/workspaces", authMiddleware, workspacesPage);
+router.get("/workspace/:id", authMiddleware, workspacePage);
 
 /* GET bill page */
 router.get("/workspaces/:workspaceId/billing", getBill);
