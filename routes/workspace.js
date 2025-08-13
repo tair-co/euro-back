@@ -1,11 +1,18 @@
 var express = require("express");
-const { getWorkspaces, createWorkspace } = require("../controllers/workspace");
+const {
+  getWorkspaces,
+  createWorkspace,
+  editWorkspace,
+} = require("../controllers/workspace");
 const { createToken, revokeToken } = require("../controllers/token");
 const { removeQuota, updateOrCreateLimit } = require("../controllers/quota");
 var router = express.Router();
 
 /* GET workpaces */
-router.get("", getWorkspaces).post("/create", createWorkspace);
+router
+  .get("", getWorkspaces)
+  .post("/create", createWorkspace)
+  .post("/:id/edit", editWorkspace);
 
 // api/workspaces/create
 /* CRUD Token */

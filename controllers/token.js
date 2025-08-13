@@ -7,7 +7,7 @@ module.exports = {
     const { name } = req.body;
     const { workspaceId } = req.params;
 
-    if (!name && name.length === 0) {
+    if ((!name && name.length === 0) || name.length > 100) {
       return res.redirect(
         `/v1/workspace/${workspaceId}?message=Invalid Provided Token name`
       );

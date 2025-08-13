@@ -10,10 +10,28 @@ module.exports = {
       next(error);
     }
   },
+  editWorkspace: async (req, res, next) => {
+    const { id } = req.params;
+    const { title, description } = req.body;
+
+    try {
+      const workspace = await Workspace.findOne({ where: { id } });
+
+      if (!workspace) {
+        return res.redirect("/v1/workspaces?message=Workspace not found");
+      }
+
+      await Workspace.update({ title, description }, { where: { id } });
+
+      res.redirect("/v1/workspaces");
+    } catch (error) {
+      next(error);
+    }
+  },
   createWorkspace: async (req, res, next) => {
     const { title, description } = req.body;
 
-    if (!title && title.length == "") {
+    if ((!title && title.length === 0) || title.length > 100) {
       return res.redirect("/v1/workspaces?message=Title required");
     }
 

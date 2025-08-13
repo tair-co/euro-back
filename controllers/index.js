@@ -34,6 +34,25 @@ module.exports = {
     }
     res.render("workspaces", { workspaces });
   },
+  workspaceEditPage: async (req, res, next) => {
+    const { id } = req.params;
+
+    let workspace;
+    // get Data
+    try {
+      workspace = await Workspace.findOne({
+        where: { id },
+      });
+    } catch (error) {
+      return next(error);
+    }
+
+    if (!workspace || workspace.user_id !== req.session.user_id) {
+      return res.redirect("/v1/workspaces");
+    }
+
+    res.render("editWorkspace", { workspace });
+  },
   workspacePage: async (req, res, next) => {
     const { message } = req.query;
     const { id } = req.params;
