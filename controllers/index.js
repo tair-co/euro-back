@@ -47,6 +47,10 @@ module.exports = {
         include: [{ model: Token, as: "tokens" }],
       });
 
+      if (!workspace || workspace.user_id !== req.session.user_id) {
+        return res.redirect("/v1/workspaces");
+      }
+
       quota = await Quota.findOne({
         where: { workspace_id: id, month_number: new Date().getMonth() + 1 },
       });

@@ -7,7 +7,7 @@ module.exports = {
 
     // if data not provided sent again to login page
     if (!username || !password) {
-      return res.redirect("/v1/login?message=invalid data provided");
+      return res.redirect("/v1/login?message=Invalid username or password");
     }
 
     try {
@@ -17,13 +17,13 @@ module.exports = {
       });
 
       if (!findUser) {
-        return res.redirect("/v1/login?message=not found user");
+        return res.redirect("/v1/login?message=Invalid username or password");
       }
 
       const comparePasword = await bcrypt.compare(password, findUser.password);
 
       if (!comparePasword) {
-        return res.redirect("/v1/login?message=invalid password");
+        return res.redirect("/v1/login?message=Invalid username or password");
       }
 
       req.session.user_id = findUser.id;

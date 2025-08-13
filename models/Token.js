@@ -11,7 +11,7 @@ const Token = sequelize.define(
       type: DataTypes.INTEGER,
     },
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(100),
       allowNull: false,
     },
     token: {
