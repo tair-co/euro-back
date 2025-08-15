@@ -1,7 +1,7 @@
 const { Sequelize } = require("sequelize");
 const bcrypt = require("bcrypt");
 
-const sequelize = new Sequelize("euroskills2023", "root", "", {
+const sequelize = new Sequelize("euroskills2023-v1", "root", "", {
   host: "MySql-8.4",
   dialect: "mysql",
 });

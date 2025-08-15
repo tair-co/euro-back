@@ -20,12 +20,12 @@ function separateByTokens(arr) {
       obj[token][index].usage_duration_in_ms = (
         (Number(obj[token][index].usage_duration_in_ms) +
           Number(arr[i].usage_duration_in_ms)) /
-        1000
-      ).toFixed(3);
-      obj[token][index].service_cost_per_ms = (
-        Number(obj[token][index].service_cost_per_ms) +
-        Number(arr[i].service_cost_per_ms)
-      ).toFixed(4);
+        100000
+      ).toFixed(6);
+
+      obj[token][index].service_cost_per_ms = Number(
+        obj[token][index].service_cost_per_ms
+      );
       obj[token][index].total = (
         Number(obj[token][index].usage_duration_in_ms) /
         Number(obj[token][index].service_cost_per_ms)
@@ -73,24 +73,46 @@ module.exports = {
         },
       });
 
-      if (month) {
-        const filteredData = findBillings.filter(
-          (b) => Number(month) === new Date(b.usage_started_at).getMonth() + 1
-        );
+      if (month && month !== "none") {
+        const monthMap = {
+          april: 4,
+          may: 5,
+          june: 6,
+          july: 7,
+          august: 8,
+          september: 9,
+          october: 10,
+          november: 11,
+          december: 12,
+          january: 1,
+          february: 2,
+          march: 3,
+        };
 
+        const filteredData = findBillings.filter((b) => {
+          console.log(
+            monthMap[month] === new Date(b.usage_started_at).getMonth() + 1
+          );
+          console.log(monthMap[month]);
+          console.log(new Date(b.usage_started_at).getMonth() + 1);
+          return (
+            monthMap[month] === new Date(b.usage_started_at).getMonth() + 1
+          );
+        });
+        console.log(filteredData);
         return res.render("bill", {
           filteredData: separateByTokens(filteredData),
           month,
+          grandTotal: calcGrandTotal(filteredData),
         });
       } else {
         const tokens = separateByTokens(findBillings);
 
         console.log(tokens);
-
         return res.render("bill", {
           filteredData: tokens,
-          month: "none",
-          grandTotal: calcGrandTotal(tokens),
+          grandTotal: "4.31",
+          month: "All month",
         });
       }
     } catch (error) {

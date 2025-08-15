@@ -1,8 +1,0 @@
-
-
-
-add sessionStorage to save user data
-
-add validation on create workspace add user_id to create workspace not global search (workspace controller)
-
-change get workspace user_id (index controller)
