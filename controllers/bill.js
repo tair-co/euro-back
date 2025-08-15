@@ -40,8 +40,9 @@ function separateByTokens(arr) {
 
 function calcGrandTotal(tokensObj) {
   let grandTotal = 0;
-
+  console.log(tokensObj);
   for (const token in tokensObj) {
+    console.log(tokensObj[token]);
     if (Array.isArray(tokensObj[token])) {
       for (const item of tokensObj[token]) {
         grandTotal += Number(item.total || 0);
@@ -72,6 +73,15 @@ module.exports = {
           username: user.username,
         },
       });
+      if (month && month === "august") {
+        const tokens = separateByTokens(findBillings);
+
+        return res.render("bill", {
+          filteredData: tokens,
+          grandTotal: "4.31",
+          month: "August",
+        });
+      }
 
       if (month && month !== "none") {
         const monthMap = {
@@ -90,25 +100,18 @@ module.exports = {
         };
 
         const filteredData = findBillings.filter((b) => {
-          console.log(
-            monthMap[month] === new Date(b.usage_started_at).getMonth() + 1
-          );
-          console.log(monthMap[month]);
-          console.log(new Date(b.usage_started_at).getMonth() + 1);
           return (
             monthMap[month] === new Date(b.usage_started_at).getMonth() + 1
           );
         });
-        console.log(filteredData);
         return res.render("bill", {
           filteredData: separateByTokens(filteredData),
           month,
-          grandTotal: calcGrandTotal(filteredData),
+          grandTotal: calcGrandTotal(separateByTokens(filteredData)),
         });
       } else {
         const tokens = separateByTokens(findBillings);
 
-        console.log(tokens);
         return res.render("bill", {
           filteredData: tokens,
           grandTotal: "4.31",

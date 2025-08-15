@@ -20,6 +20,18 @@ module.exports = {
       if (!workspace) {
         return res.redirect("/v1/workspaces?message=Workspace not found");
       }
+      const exitsTitle = await Workspace.findOne({
+        where: {
+          title,
+          user_id: req.session.user_id,
+        },
+      });
+
+      if (exitsTitle && exitsTitle.id !== id) {
+        return res.redirect(
+          "/v1/workspaces?message=Workspace with this title already exists"
+        );
+      }
 
       await Workspace.update({ title, description }, { where: { id } });
 
